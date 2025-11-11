@@ -6,11 +6,11 @@ import { z } from "zod";
 const createBillSchema = z.object({
   name: z.string().min(1).max(100),
   amount: z.number().min(0),
-  dueDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
-  isRecurring: z.boolean().default(false),
-  frequency: z.enum(["weekly", "monthly", "yearly"]).optional(),
+  dueDay: z.number().min(1).max(28),
+  category: z.string().optional(),
+  recurring: z.boolean().default(true),
+  frequency: z.enum(["monthly", "quarterly", "yearly"]).default("monthly"),
+  isAutoPay: z.boolean().default(false),
 });
 
 export async function GET() {
@@ -37,18 +37,21 @@ export async function GET() {
 
     const bills = await prisma.bill.findMany({
       where: { userId: user.id },
-      orderBy: { dueDate: "asc" },
+      orderBy: { dueDay: "asc" },
     });
 
     return NextResponse.json({
-      data: bills.map((bill) => ({
+      bills: bills.map((bill) => ({
         id: bill.id,
         name: bill.name,
         amount: Number(bill.amount),
-        dueDate: bill.dueDate.toISOString(),
+        dueDay: bill.dueDay,
+        category: bill.category,
         isPaid: bill.isPaid,
-        isRecurring: bill.isRecurring,
+        recurring: bill.recurring,
         frequency: bill.frequency,
+        isAutoPay: bill.isAutoPay,
+        createdAt: bill.createdAt.toISOString(),
       })),
     });
   } catch (error) {
@@ -95,23 +98,22 @@ export async function POST(request: NextRequest) {
     const bill = await prisma.bill.create({
       data: {
         userId: user.id,
-        name: validation.data.name,
-        amount: validation.data.amount,
-        dueDate: new Date(validation.data.dueDate),
-        isRecurring: validation.data.isRecurring,
-        frequency: validation.data.frequency,
+        ...validation.data,
       },
     });
 
     return NextResponse.json({
-      data: {
+      bill: {
         id: bill.id,
         name: bill.name,
         amount: Number(bill.amount),
-        dueDate: bill.dueDate.toISOString(),
+        dueDay: bill.dueDay,
+        category: bill.category,
         isPaid: bill.isPaid,
-        isRecurring: bill.isRecurring,
+        recurring: bill.recurring,
         frequency: bill.frequency,
+        isAutoPay: bill.isAutoPay,
+        createdAt: bill.createdAt.toISOString(),
       },
     }, { status: 201 });
   } catch (error) {

@@ -38,15 +38,41 @@ export async function GET() {
       orderBy: { name: "asc" },
     });
 
+    // Calculate spent amount for each category this month
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+
+    const categoriesWithSpent = await Promise.all(
+      categories.map(async (cat) => {
+        const transactions = await prisma.transaction.findMany({
+          where: {
+            userId: user.id,
+            category: cat.name,
+            date: {
+              gte: startOfMonth,
+              lte: endOfMonth,
+            },
+          },
+        });
+
+        const spent = transactions.reduce((sum, txn) => sum + Number(txn.amount), 0);
+
+        return {
+          id: cat.id,
+          name: cat.name,
+          budget: Number(cat.budget),
+          spent,
+          isDiscretionary: cat.isDiscretionary,
+          color: cat.color,
+          icon: cat.icon,
+          createdAt: cat.createdAt.toISOString(),
+        };
+      })
+    );
+
     return NextResponse.json({
-      data: categories.map((cat) => ({
-        id: cat.id,
-        name: cat.name,
-        budget: Number(cat.budget),
-        isDiscretionary: cat.isDiscretionary,
-        color: cat.color,
-        icon: cat.icon,
-      })),
+      categories: categoriesWithSpent,
     });
   } catch (error) {
     console.error("Error fetching categories:", error);

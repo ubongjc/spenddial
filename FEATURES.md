@@ -1,7 +1,7 @@
 # SpendDial Features Documentation
 
-**Last Updated:** 2025-11-10
-**Version:** 0.2.0
+**Last Updated:** 2025-11-11
+**Version:** 0.4.0
 **Branch:** claude/spenddial-initial-setup-011CV15stvvrTteFJgbV7Jz1
 
 ---
@@ -14,7 +14,7 @@ SpendDial is a **production-ready** financial tracking application that helps us
 
 ## 🌐 Web Application Features
 
-### ✅ Implemented Features (v0.2.0)
+### ✅ Implemented Features (v0.4.0)
 
 #### Infrastructure & Setup
 - **Next.js 16 with App Router** - Latest React framework with server components
@@ -106,6 +106,121 @@ SpendDial is a **production-ready** financial tracking application that helps us
 - ✅ **Feature Gating** - Limit features by tier
 - ✅ **Billing Portal Integration** - Customer self-service
 - ✅ **Trial Period Support** - Free trial management
+
+#### Enterprise Security & Observability (v0.3.0-v0.4.0)
+- ✅ **Sentry Error Tracking** - Client & server-side error monitoring
+- ✅ **Session Replay** - 10% sampling, 100% on errors
+- ✅ **Performance Monitoring** - API tracing and profiling
+- ✅ **Rate Limiting** - Per-endpoint limits (auth, API, webhooks, sync)
+- ✅ **Upstash Redis Integration** - Distributed rate limiting with in-memory fallback
+- ✅ **Security Headers** - CSP, HSTS, X-Frame-Options, XSS protection
+- ✅ **Input Sanitization** - XSS and injection prevention
+- ✅ **IP Whitelisting** - Webhook source verification (Stripe IPs)
+- ✅ **Audit Logging** - 20+ action types with database persistence
+- ✅ **Security Alerts** - Severity-based alerting (low/medium/high/critical)
+- ✅ **AES-256 Encryption** - Data encryption at rest
+- ✅ **PBKDF2 Key Derivation** - Secure password hashing
+- ✅ **Data Masking** - Sensitive data obfuscation in logs
+- ✅ **Secure Token Generation** - Cryptographically secure random tokens
+- ✅ **SHA-256 Hashing** - Data integrity verification
+
+#### Email Notifications (v0.4.0)
+- ✅ **Resend Integration** - Production email service
+- ✅ **Welcome Email** - Onboarding with feature highlights
+- ✅ **Budget Alerts** - Severity-based low budget warnings
+- ✅ **Daily Summary** - Spending summary with category breakdown
+- ✅ **Bill Reminders** - Upcoming bill notifications
+- ✅ **Weekly Reports** - Weekly spending insights
+- ✅ **Unusual Activity Alerts** - Fraud detection notifications
+- ✅ **Beautiful Templates** - @react-email/components with inline styles
+- ✅ **Responsive Design** - Mobile-optimized email layouts
+
+#### Transaction Management (v0.4.0)
+- ✅ **Transaction List Page** - Full transaction table with pagination
+- ✅ **Advanced Filtering** - Filter by category, date range
+- ✅ **Pagination** - 50 transactions per page with offset
+- ✅ **Status Badges** - Pending vs Posted visual indicators
+- ✅ **Merchant Info** - Merchant name and description display
+- ✅ **Account Attribution** - Show which account per transaction
+- ✅ **Amount Display** - Formatted currency display
+- ✅ **Date Formatting** - Human-readable date display
+- ✅ **Empty States** - Call-to-action when no transactions
+- ✅ **Loading States** - Skeleton screens during data fetch
+
+#### Category Management (v0.4.0)
+- ✅ **Category Grid View** - Beautiful card-based category display
+- ✅ **CRUD Operations** - Create, Read, Update, Delete categories
+- ✅ **Budget Allocation** - Set monthly budget per category
+- ✅ **Spending Tracking** - Real-time spent vs budget calculation
+- ✅ **Progress Bars** - Visual budget consumption indicators
+- ✅ **Color Customization** - Custom color picker for categories
+- ✅ **Icon Selection** - Emoji icons with preset options
+- ✅ **Remaining Balance** - Auto-calculate remaining budget
+- ✅ **Status Colors** - Green/Orange/Red based on consumption
+- ✅ **Modal Forms** - Inline add/edit without page navigation
+- ✅ **Monthly Reset** - Automatic spending reset each month
+
+#### Bill Management (v0.4.0)
+- ✅ **Bill List Page** - Comprehensive bill tracking table
+- ✅ **CRUD Operations** - Create, Read, Update, Delete bills
+- ✅ **Due Day Tracking** - Day-of-month due date (1-28)
+- ✅ **Category Association** - Link bills to spending categories
+- ✅ **Recurring Support** - Monthly, Quarterly, Yearly frequencies
+- ✅ **AutoPay Indicators** - Flag autopay bills
+- ✅ **Due Date Calculation** - Auto-calculate days until due
+- ✅ **Status Badges** - Due today, due soon, upcoming indicators
+- ✅ **Bill Sorting** - Auto-sort by urgency (days until due)
+- ✅ **Summary Cards** - Total bills, active count, autopay count
+- ✅ **Modal Forms** - Streamlined bill creation/editing
+- ✅ **Updated Schema** - dueDay, category, isAutoPay, recurring fields
+
+#### Data Privacy & Compliance (v0.4.0)
+- ✅ **Data Export API** - Complete JSON export of all user data
+- ✅ **Export Audit Trail** - Log all export requests
+- ✅ **Account Deletion API** - GDPR-compliant deletion workflow
+- ✅ **Confirmation Required** - "DELETE MY ACCOUNT" verification
+- ✅ **Cascading Deletes** - Remove all associated data
+- ✅ **Clerk Integration** - Delete from auth provider
+- ✅ **Deletion Audit** - Log account deletion with metadata
+- ✅ **Transaction Safety** - Atomic deletion operations
+- ✅ **Deletion Summary** - Return count of deleted records
+
+#### Progressive Web App (PWA) (v0.4.0)
+- ✅ **Web Manifest** - Full PWA manifest with icons
+- ✅ **Service Worker** - Offline-first architecture
+- ✅ **Offline Support** - Cached pages and API responses
+- ✅ **Install Prompt** - Native install banner
+- ✅ **App Shortcuts** - Dashboard, Transactions, Add shortcuts
+- ✅ **Background Sync** - Transaction syncing when offline
+- ✅ **Push Notifications** - Web push support infrastructure
+- ✅ **Cache Strategy** - Network-first for API, cache-first for assets
+- ✅ **Offline Page** - Custom offline experience
+- ✅ **Auto-Update** - Service worker update mechanism
+- ✅ **iOS PWA Support** - Apple touch icons and meta tags
+- ✅ **Standalone Mode** - Full-screen app experience
+- ✅ **Theme Color** - System-wide theme integration
+
+#### Updated API Endpoints (v0.4.0)
+- `GET /api/categories` - List categories with spent amounts
+- `POST /api/categories` - Create new category
+- `PATCH /api/categories/[id]` - Update category
+- `DELETE /api/categories/[id]` - Delete category
+- `GET /api/bills` - List bills with due day
+- `POST /api/bills` - Create new bill
+- `PATCH /api/bills/[id]` - Update bill
+- `DELETE /api/bills/[id]` - Delete bill
+- `GET /api/user/export` - Export all user data
+- `POST /api/user/delete` - Delete account permanently
+
+#### Updated Database Schema (v0.4.0)
+- **Transaction Model** - Added `userId` field for denormalized queries
+- **Bill Model** - Added `dueDay`, `category`, `isAutoPay`, `recurring` fields
+- **Bill Model** - Changed `dueDate` to optional for recurring bills
+- **Category Model** - Added `user` relation
+- **Bill Model** - Added `user` relation
+- **User Model** - Added `bills` and `categories` relations
+- **AuditLog Model** - Tracks 20+ security and user actions
+- **EncryptionKey Model** - User-specific encryption key management
 
 ---
 
@@ -362,24 +477,28 @@ None at this time. All features tested and working.
 ## 🔜 Planned Enhancements (Next Sprint)
 
 ### Web Application
-- Transaction list page with search/filter
-- Category management UI (CRUD)
-- Bill management UI (CRUD)
-- Data export functionality
-- Account deletion flow
-- Rate limiting middleware
-- Email notifications
-- Advanced charts (Chart.js/Recharts)
+- ⏳ Advanced charts (Chart.js/Recharts)
+- ⏳ Automated testing (Jest, Playwright, Cypress)
+- ⏳ A/B testing framework (Optimizely)
+- ⏳ Public API v1 with documentation
+- ⏳ AI spending insights & predictions
+- ⏳ Referral program
+- ⏳ Team accounts with RBAC
+- ⏳ Chrome extension
+- ⏳ Web push notifications
 
 ### iOS Application
-- Onboarding flow
-- Transaction list
-- Category management
-- Bill management
-- Haptic feedback
-- Widgets (Today widget)
-- Push notifications
-- App icons & splash screens
+- ⏳ Onboarding flow
+- ⏳ Transaction list
+- ⏳ Category management
+- ⏳ Bill management
+- ⏳ Haptic feedback & animations
+- ⏳ Widgets (Today widget, Lock Screen)
+- ⏳ Live Activities
+- ⏳ Siri Shortcuts
+- ⏳ Apple Watch app
+- ⏳ Push notifications
+- ⏳ App icons & splash screens
 
 ---
 
@@ -408,7 +527,33 @@ None at this time. All features tested and working.
 
 ## 📅 Version History
 
-### v0.2.0 (2025-11-10)
+### v0.4.0 (2025-11-11) - Enterprise Security & Complete Feature Set
+- ✅ Sentry error tracking & session replay
+- ✅ Email notification system (6 templates)
+- ✅ Transaction management UI with filters & pagination
+- ✅ Category management UI with CRUD operations
+- ✅ Bill management UI with due day tracking
+- ✅ Data export API (GDPR compliance)
+- ✅ Account deletion workflow
+- ✅ Progressive Web App (PWA) support
+- ✅ Service worker with offline mode
+- ✅ Install prompt & app shortcuts
+- ✅ Updated database schema with relations
+- ✅ Security headers & input sanitization
+- ✅ Audit logging with 20+ action types
+- ✅ AES-256 encryption infrastructure
+
+### v0.3.0 (2025-11-11) - Enterprise Security Foundation
+- ✅ Rate limiting (auth, API, webhooks, sync)
+- ✅ Security headers (CSP, HSTS, XSS protection)
+- ✅ IP whitelisting for webhooks
+- ✅ Audit logging system
+- ✅ Encryption utilities (AES-256, PBKDF2)
+- ✅ Data masking for logs
+- ✅ Secure token generation
+- ✅ AuditLog & EncryptionKey models
+
+### v0.2.0 (2025-11-10) - Production Banking Features
 - ✅ Plaid bank integration (link, exchange, sync)
 - ✅ Transaction syncing with categorization
 - ✅ Bill prediction algorithm
@@ -422,7 +567,7 @@ None at this time. All features tested and working.
 - ✅ Responsive design
 - ✅ Dark mode support
 
-### v0.1.0 (2025-11-10)
+### v0.1.0 (2025-11-10) - Initial Scaffold
 - Initial project scaffold
 - Web and iOS applications created
 - Core authentication implemented
@@ -433,6 +578,6 @@ None at this time. All features tested and working.
 
 ---
 
-**Last Commit:** Adding complete production features - Plaid, Stripe, Analytics, Dashboard
+**Last Commit:** v0.4.0 - Enterprise features: Sentry, Email, Transaction/Category/Bill UIs, Data Export/Deletion, PWA
 
-**Next Update:** After implementing transaction/category/bill management UIs
+**Next Update:** After implementing automated tests, push notifications, iOS widgets, or AI features

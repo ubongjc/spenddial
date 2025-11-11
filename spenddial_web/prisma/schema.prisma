@@ -21,6 +21,8 @@ model User {
 
   accounts      Account[]
   dialStates    DialState[]
+  bills         Bill[]
+  categories    Category[]
 
   @@index([clerkId])
   @@index([email])
@@ -48,6 +50,7 @@ model Account {
 
 model Transaction {
   id            String    @id @default(cuid())
+  userId        String    // Denormalized for easier querying
   accountId     String
   amount        Decimal
   description   String?
@@ -61,6 +64,7 @@ model Transaction {
 
   account       Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@index([accountId])
   @@index([date])
   @@index([category])
@@ -86,15 +90,20 @@ model Bill {
   userId        String
   name          String
   amount        Decimal
-  dueDate       DateTime
+  dueDay        Int       // Day of month (1-28)
+  dueDate       DateTime? // Full due date (optional, for one-time bills)
+  category      String?
   isPaid        Boolean   @default(false)
-  isRecurring   Boolean   @default(false)
-  frequency     String?   // monthly, weekly, yearly
+  recurring     Boolean   @default(true)
+  frequency     String    @default("monthly") // monthly, quarterly, yearly
+  isAutoPay     Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
-  @@index([dueDate])
+  @@index([dueDay])
 }
 
 model Category {
@@ -107,6 +116,8 @@ model Category {
   icon          String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, name])
   @@index([userId])
