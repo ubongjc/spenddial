@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: SpendDial API
+  description: Live dial of discretionary spend left today
+  version: 1.0.0
+  contact:
+    name: SpendDial Team
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://api.spenddial.com
+    description: Production server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    DialState:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        todayBudget:
+          type: number
+          format: double
+        remaining:
+          type: number
+          format: double
+        spent:
+          type: number
+          format: double
+        lastCalculated:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UpdateDialState:
+      type: object
+      properties:
+        todayBudget:
+          type: number
+          format: double
+        remaining:
+          type: number
+          format: double
+        spent:
+          type: number
+          format: double
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: object
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  service:
+                    type: string
+                  database:
+                    type: string
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /dial:
+    get:
+      summary: Get current dial state
+      tags:
+        - Dial
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dial state retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DialState'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Dial state not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Update dial state
+      tags:
+        - Dial
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDialState'
+      responses:
+        '200':
+          description: Dial state updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DialState'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
