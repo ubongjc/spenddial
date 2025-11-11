@@ -128,3 +128,17 @@ model Subscription {
   @@index([userId])
   @@index([stripeCustomerId])
 }
+
+model PlaidItem {
+  id              String    @id @default(cuid())
+  itemId          String    @unique
+  accessToken     String    // In production, encrypt this
+  userId          String
+  institutionId   String?
+  institutionName String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([itemId])
+}
